@@ -2,6 +2,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import {v4 as uuid} from "uuid";
+import {saveData } from "../Utils/localStorage";
 
 export default function Home() {
 
@@ -32,12 +33,13 @@ export default function Home() {
             image: image,
             description: description
         }
-        const config = {
-            url: "http://localhost:3000/cartItems",
-            method: "post",
-            data: payload
-        }
-        return axios(config)
+        // const config = {
+        //     url: "http://localhost:3000/cartItems",
+        //     method: "post",
+        //     data: payload
+        // }
+        // return axios(config)
+        saveData("cartItems",payload)
     }
 
     const handleAdd = () => {

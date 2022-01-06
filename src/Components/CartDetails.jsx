@@ -1,13 +1,15 @@
 import axios from "axios"
 import {useEffect, useState } from "react";
 import {Link } from "react-router-dom";
+import { loadData } from "../Utils/localStorage";
 
 export default function ItemsDetails() {
 
-    const getItems = () => {
-        return axios.get("http://localhost:3000/cartItems")
-    }
+    // const getItems = () => {
+    //     return axios.get("http://localhost:3000/cartItems")
+    // }
 
+    const cartItems=loadData("cartItems")
     const [data, SetData] = useState([]);
     var [count, setCount] = useState(1);
 
@@ -44,7 +46,7 @@ const handleDelete = () => {
         <div style={{display: "flex",flexDirection:"column",alignItems: "center"}}>
             <h1>Cart Item Details Page</h1>
             {
-                data.map((item)=>{
+                cartItems.map((item)=>{
                     return <div style={{ 
                         display: "flex", 
                         gap: "1rem", 
