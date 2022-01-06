@@ -1,27 +1,27 @@
 import { combineReducers, createStore, applyMiddleware, compose } from "redux";
 import { reducer } from "./todo/reducer";
+import thunk from "redux-thunk";
 
 const rootReducer = combineReducers(reducer);
 
-const logger = (state) => (next) => (action) => {
-  console.log("dispatching action,", action, next, state);
-  const val = next(action);
-  console.log("exiting logger");
-  return val;
+const networkRequestsMiddleware = (store) => (next) => (action) => {
+  if (typeof action === "function") {
+    const func = action;
+    return func(store.dispatch, store.getState);
+  } else {
+    return next(action);
+  }
 };
 
-const logger2 = (state) => (next) => (action) => {
-  console.log("dispatching action from logger 2,", action, next, state);
-  const val = next(action);
-  console.log("exiting logger2");
-  return val;
-};
+let enhancers = compose;
 
-const composeEnhancers =
-  (typeof window !== "undefined" &&
-    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) ||
-  compose;
+if (process.env.NODE_ENV !== "production") {
+  enhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
+    : compose;
+}
 
-const enhancer = composeEnhancers(applyMiddleware(logger, logger2));
+const enhancer = enhancers(applyMiddleware(thunk));
 
 export const store = createStore(rootReducer, enhancer);
+
