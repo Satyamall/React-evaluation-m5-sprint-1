@@ -1,6 +1,6 @@
 
 
-const addData=(payload)=>{
+export const addData=(payload)=>{
     return {
         type: "ADD_DATA",
         payload

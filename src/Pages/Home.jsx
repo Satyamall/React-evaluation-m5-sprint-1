@@ -2,7 +2,8 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import {v4 as uuid} from "uuid";
-import {saveData } from "../Utils/localStorage";
+import {useDispatch} from "react-redux";
+import { addData } from "../Redux/action";
 
 export default function Home() {
 
@@ -23,6 +24,7 @@ export default function Home() {
 
     }, [])
 
+    const dispatch=useDispatch();
     const handleCart = ({ count, price, id,name, description,image}) => {
         const payload = {
             id: uuid,
@@ -39,7 +41,8 @@ export default function Home() {
         //     data: payload
         // }
         // return axios(config)
-        saveData("cartItems",payload)
+       const list= addData(payload);
+       dispatch(list);
     }
 
     const handleAdd = () => {
